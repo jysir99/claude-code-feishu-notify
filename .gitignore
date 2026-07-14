@@ -1,0 +1,23 @@
+# 包含真实 webhook / 密钥的本地配置，切勿提交
+# Local configs containing real webhooks / secrets — never commit
+settings.local.json
+*.local.json
+.env
+.env.*
+
+# 系统文件 / OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器 / Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 日志 / Logs
+*.log
+npm-debug.log*
+node_modules/

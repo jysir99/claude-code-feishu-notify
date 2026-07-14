@@ -1,0 +1,47 @@
+{
+  "_comment": "Claude Code settings 示例 —— 复制到 ~/.claude/settings.json 并替换 <...> 占位符。",
+  "_comment_en": "Claude Code settings example — copy into ~/.claude/settings.json and replace <...> placeholders.",
+
+  "env": {
+    "FEISHU_WEBHOOK": "https://open.feishu.cn/open-apis/bot/v2/hook/<your-key>",
+
+    "_comment_secret": "可选：启用了签名校验的机器人，填上它的 SEC 密钥。",
+    "_comment_secret_en": "Optional: if the bot enforces signature verification, set its SEC secret.",
+    "FEISHU_WEBHOOK_SECRET": "<optional-SEC-secret-or-remove-this-line>"
+  },
+
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "_comment_path": "改成你实际的 feishu-notify.js 绝对路径",
+            "_comment_path_en": "Replace with the absolute path to your feishu-notify.js",
+            "command": "node \"<absolute-path-to>/feishu-notify.js\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"<absolute-path-to>/feishu-notify.js\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"<absolute-path-to>/feishu-notify.js\""
+          }
+        ]
+      }
+    ]
+  }
+}
