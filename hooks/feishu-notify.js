@@ -4,7 +4,7 @@
  * Claude Code → 飞书 (Feishu/Lark) 通知脚本
  * Claude Code → Feishu/Lark notification script
  *
- * GitHub: https://github.com/<your-name>/claude-code-feishu-notify
+ * GitHub: https://github.com/jysir99/claude-code-feishu-notify
  * License: MIT
  *
  * 由 Claude Code 的 hooks (Notification / Stop / SubagentStop) 触发。
