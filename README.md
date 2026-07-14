@@ -8,6 +8,10 @@
 
 零依赖 · 单文件 · 跨平台 · 不阻塞 Claude Code
 
+<img src="./docs/images/feishu-notification-demo.png" alt="飞书通知效果演示" width="420">
+
+*实际收到的飞书通知效果*
+
 </div>
 
 ---

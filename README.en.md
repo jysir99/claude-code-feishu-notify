@@ -8,6 +8,10 @@ English · [简体中文](./README.md)
 
 Zero dependencies · Single file · Cross-platform · Non-blocking
 
+<img src="./docs/images/feishu-notification-demo.png" alt="Feishu notification example" width="420">
+
+*An actual Feishu notification as received*
+
 </div>
 
 ---
