@@ -129,12 +129,12 @@ function buildCardPayload(meta, projectName, cwd, sessionId, message, time) {
     });
   }
 
-  // 会话恢复命令（最关键信息：用分隔线 + 代码块独立成段，便于复制）
+  // 会话恢复命令（用行内代码样式呈现，飞书 lark_md 对三反引号代码块渲染不佳）
   if (sessionId) {
     elements.push({ tag: 'hr' });
     elements.push({
       tag: 'div',
-      text: { tag: 'lark_md', content: '🔄 **恢复会话（复制执行）**\n```text\nclaude --resume ' + sessionId + '\n```' },
+      text: { tag: 'lark_md', content: '🔄 **恢复会话（复制执行）**\n`claude --resume ' + sessionId + '`' },
     });
   }
 
