@@ -6,11 +6,11 @@
 
 [English](./README.en.md) · 简体中文
 
-零依赖 · 单文件 · 跨平台 · 不阻塞 Claude Code
+零依赖 · 单文件 · 跨平台 · 不阻塞 Claude Code · 交互卡片
 
 <img src="./docs/images/feishu-notification-demo.png" alt="飞书通知效果演示" width="420">
 
-*实际收到的飞书通知效果*
+*实际收到的飞书交互卡片效果（旧版纯文本示意，新版为彩色交互卡片）*
 
 </div>
 
@@ -23,18 +23,16 @@
 - 🔔 Claude 弹出**权限确认**，但你正在看别的东西，没注意到
 - ✅ 一个长任务**跑完了**，你却一直在盯着终端等
 
-本项目通过 Claude Code 的 **Hooks 机制**，在这两个关键时刻自动往**飞书群**推送一条通知，让你可以放心离开屏幕，等手机响了再回来。
+本项目通过 Claude Code 的 **Hooks 机制**，在这两个关键时刻自动往**飞书群**推送一条**交互卡片**通知，让你可以放心离开屏幕，等手机响了再回来。
 
-通知长这样 👇
+通知是一张**彩色交互卡片** 👇
 
-```
-【Claude Code】🔔 需要你确认权限 · my-project
-📁 C:/Users/me/projects/my-project
-🔄 claude --resume ca330f41-5c35-495c-97ac-0e2d42a70b82
-⏰ 2026/7/14 09:19:07
-```
+- 🎨 **彩色标题栏**：不同事件不同颜色，一眼区分严重程度
+  - 🟠 橙色 = 需要确认权限 · 🟢 绿色 = 任务完成 · 🔵 蓝色 = 子任务完成
+- 📐 **双列结构化布局**：事件类型 / 时间左右并排，信息密度高
+- 🔄 **突出的会话恢复命令**：独立的代码块，一键复制 `claude --resume <id>` 跳回会话
 
-其中 `🔄 claude --resume <id>` 这一行可以直接**复制到终端执行**，一键跳回对应会话。
+卡片包含：事件类型、北京时间、消息正文、工作目录（代码块样式）、会话恢复命令。
 
 ## 🎯 适用场景
 
@@ -128,17 +126,27 @@ echo '{"hook_event_name":"Stop","cwd":"/home/me/my-project","session_id":"test-1
 
 ## 📋 事件说明
 
-| Hook 事件 | 触发时机 | 通知标题 |
-|---|---|---|
-| `Notification` | Claude **需要你确认权限** | 🔔 需要你确认权限 |
-| `Stop` | 主任务**跑完**、等你输入 | ✅ 任务已完成 |
-| `SubagentStop` | **子任务**（Task / Agent）完成 | ✅ 子任务已完成 |
+| Hook 事件 | 触发时机 | 卡片颜色 | 通知标题 |
+|---|---|---|---|
+| `Notification` | Claude **需要你确认权限** | 🟠 橙色 | 🔔 需要确认权限 |
+| `Stop` | 主任务**跑完**、等你输入 | 🟢 绿色 | ✅ 任务已完成 |
+| `SubagentStop` | **子任务**（Task / Agent）完成 | 🔵 蓝色 | 📦 子任务已完成 |
 
 > 💡 不想要其中某个？从 `hooks` 配置里删掉对应块即可。
 
 ## ⚙️ 自定义
 
-想改通知文案 / emoji / 格式？编辑 `hooks/feishu-notify.js` 中的 `labels` 对象和 `lines` 数组即可，注释标得很清楚。
+想改通知文案 / emoji / 卡片颜色？编辑 `hooks/feishu-notify.js` 顶部的 `EVENT_META` 对象即可，每个事件可单独配置 `emoji`、`name`、`color`：
+
+```js
+const EVENT_META = {
+  Notification: { emoji: '🔔', name: '需要确认权限', color: 'orange' },
+  Stop:         { emoji: '✅', name: '任务已完成',   color: 'green'  },
+  SubagentStop: { emoji: '📦', name: '子任务已完成', color: 'blue'   },
+};
+```
+
+飞书卡片支持的标题栏颜色：`blue` / `wathet` / `turquoise` / `green` / `yellow` / `orange` / `red` / `carmine` / `violet` / `purple` / `indigo` / `grey`。
 
 ## ❓ 常见问题
 
@@ -147,8 +155,11 @@ echo '{"hook_event_name":"Stop","cwd":"/home/me/my-project","session_id":"test-1
 - 用上面的「测试命令」单独跑脚本，看飞书是否收到
 - 直接用 `curl` 测 webhook 地址，看飞书 API 是否返回 `StatusCode: 0`
 
+**Q：卡片发失败会丢消息吗？**
+- 不会。脚本有**自动降级机制**：交互卡片发送失败（网络错误、飞书拒绝等）时，会自动改用纯文本重新发送一次，确保你不会错过重要通知。
+
 **Q：webhook 地址会泄露吗？**
-- 不会上传到任何地方，只在你本地的 `settings.json` 里。**不要把 settings.json 提交到 git**（见 `.gitignore`）。建议同时开启上面的「签名校验」。
+- 不会上传到任何地方，只在你本地的 `settings.json` 里。**不要把 settings.json 提交到 git**（见 `.gitignore`）。建议同时开启上面的「签名校验**。
 
 **Q：会拖慢 Claude Code 吗？**
 - 不会。脚本设计为**非阻塞**——webhook 没配、网络失败都静默跳过，exit 0。

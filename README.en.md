@@ -6,11 +6,11 @@
 
 English · [简体中文](./README.md)
 
-Zero dependencies · Single file · Cross-platform · Non-blocking
+Zero dependencies · Single file · Cross-platform · Non-blocking · Interactive card
 
 <img src="./docs/images/feishu-notification-demo.png" alt="Feishu notification example" width="420">
 
-*An actual Feishu notification as received*
+*An actual Feishu interactive card as received*
 
 </div>
 
